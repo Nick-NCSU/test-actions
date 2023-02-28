@@ -1,0 +1,32 @@
+name: Test Actions
+on:
+  workflow_dispatch
+
+jobs:
+  output-url:
+    name: Output URL
+    runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.url.outputs.url }}
+      nourl: ${{ steps.nourl.outputs.url }}
+    steps:
+      - name: Output URL
+        id: url
+        run: echo "url=https://www.github.com/" >> $GITHUB_OUTPUT
+      - name: Output No URL
+        id: nourl
+        if: false
+        run: echo "url=https://www.github.com/" >> $GITHUB_OUTPUT
+  
+  print-url:
+    name: Print URLs
+    runs-on: ubuntu-latest
+    needs: [output-url]
+    steps:
+      - name: Print URLs
+        env:
+          URL: ${{ needs.output-url.outputs.url }}
+          NOURL: ${{ needs.output-url.outputs.nourl }}
+        shell: bash
+        run: |
+            echo "${{ URL }} - ${{ NOURL }}"
