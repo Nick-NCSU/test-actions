@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Output URL
         id: url
-        run: echo "url=https://www.github.com/" >> $GITHUB_OUTPUT
+        run: echo "url=$(date +'%y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Output No URL
         id: nourl
         if: false
