@@ -1,32 +1,19 @@
 name: Test Actions
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      graphProjectName:
+        type: string
+        description: 'graph project name'
+      integrationName:
+        type: string
+        description: 'integration name'
+        required: true
 
 jobs:
-  output-url:
-    name: Output URL
+  print-name:
+    name: Print Name
     runs-on: ubuntu-latest
-    outputs:
-      url: ${{ steps.url.outputs.url }}
-      nourl: ${{ steps.nourl.outputs.url }}
     steps:
-      - name: Output URL
-        id: url
-        run: echo "url=$(date +'%y-%m-%d')" >> $GITHUB_OUTPUT
-      - name: Output No URL
-        id: nourl
-        if: false
-        run: echo "url=https://www.github.com/" >> $GITHUB_OUTPUT
-  
-  print-url:
-    name: Print URLs
-    runs-on: ubuntu-latest
-    needs: [output-url]
-    steps:
-      - name: Print URLs
-        env:
-          URL: ${{ needs.output-url.outputs.url }}
-          NOURL: ${{ needs.output-url.outputs.nourl }}
-        shell: bash
-        run: |
-            echo "Url1: $URL \nUrl2: $NOURL"
+      - name: Print Name
+        run: echo {{ inputs.graphProjectName || inputs.integrationName }}
