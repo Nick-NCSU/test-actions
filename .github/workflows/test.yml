@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Name
-        run: echo {{ inputs.graphProjectName || inputs.integrationName }}
+        run: echo "{{ inputs.graphProjectName || inputs.integrationName }}"
