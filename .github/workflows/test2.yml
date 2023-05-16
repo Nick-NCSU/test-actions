@@ -12,7 +12,7 @@ jobs:
         id: set
         shell: bash
         run: |
-          "{versionNumber}={context.payload.release.tag_name:1}" >> "$GITHUB_OUTPUT"
+          "{versionNumber}={${ ${{context.payload.release.tag_name}}:1 }}" >> "$GITHUB_OUTPUT"
       - name: output
         shell: bash
         run: echo "${{ steps.set.outputs.versionNumber }}"
