@@ -20,7 +20,7 @@ jobs:
           TAGNAME: ${{ github.event.release.tag_name }}
         run: |
           TAG=${{ inputs.version }}
-          echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUTS
+          echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
       - name: output
         shell: bash
         run: echo "${{ steps.set.outputs.VERSION }}"
