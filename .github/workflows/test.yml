@@ -11,9 +11,18 @@ on:
         required: true
 
 jobs:
-  print-name:
-    name: Print Name
+  set-output:
     runs-on: ubuntu-latest
-    steps:
-      - name: Print Name
-        run: echo "${{ inputs.graphProjectName || inputs.integrationName }}"
+    steps: 
+      set-output:
+        - name: set output
+          id: set
+          uses: actions/github-script@0.9.0
+          with:
+            script: |
+              core.setOutput('test', 'test2')
+              core.setOutPut('test3', 'test4')
+      output:
+        - name: output
+          shell: bash
+          run: echo "${{ steps.set.outputs.test }} ${{ steps.set.outputs.test3 }}"
