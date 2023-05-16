@@ -2,9 +2,6 @@ name: Test Actions 2
 on: 
   workflow_dispatch:
     inputs:
-      version:
-        type: string
-        description: 'graph project name'
   release:
     types:
       - published
@@ -17,8 +14,8 @@ jobs:
         id: set
         shell: bash
         run: |
-          TAG=${{ github.event.release.tag_name }}
-          echo "versionNumber=${TAG#v}" >> $GITHUB_OUTPUT
+          NAME=${{ github.event.repository.name }}
+          echo "versionNumber=${NAME#test-}" >> $GITHUB_OUTPUT
       - name: output
         shell: bash
         run: echo "${{ steps.set.outputs.versionNumber }}"
