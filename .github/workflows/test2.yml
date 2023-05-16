@@ -11,8 +11,10 @@ jobs:
       - name: set output
         id: set
         shell: bash
+        env: 
+          TAGNAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "versionNumber=${ ${{ github.event.release.tag_name}}:1 }" >> "$GITHUB_OUTPUT" 
+          echo "versionNumber=${ $TAGNAME:1 }" >> "$GITHUB_OUTPUT" 
       - name: output
         shell: bash
         run: echo "${{ steps.set.outputs.versionNumber }}"
