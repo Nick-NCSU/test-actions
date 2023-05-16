@@ -13,7 +13,6 @@ jobs:
         shell: bash
         run: |
           tagName = ${{ github.event.release.tag_name}}
-          "versionNumber={echo "$tagName"}" >> "$GITHUB_OUTPUT"
       - name: output
         shell: bash
         run: echo "${{ steps.set.outputs.versionNumber }}"
