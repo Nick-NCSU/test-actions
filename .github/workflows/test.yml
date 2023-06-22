@@ -1,6 +1,6 @@
 name: Test Actions
 on:
-  pull_request
+  pull_request_target
 
 jobs:
   set-output:
