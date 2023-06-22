@@ -1,26 +1,41 @@
 name: Test Actions
 on:
-  workflow_dispatch:
-    inputs:
-      graphProjectName:
-        type: string
-        description: 'graph project name'
-      integrationName:
-        type: string
-        description: 'integration name'
-        required: true
+  pull_request
 
 jobs:
   set-output:
     runs-on: ubuntu-latest
     steps: 
-      - name: set output
-        id: set
-        uses: actions/github-script@0.9.0
+      - name: yq - portable yaml processor
+        uses: mikefarah/yq@v4.34.1
+        id: yaml
         with:
-          script: |
-            core.setOutput('test', 'test2')
-            core.setOutPut('test3', 'test4')
-      - name: output
-        shell: bash
-        run: echo "${{ steps.set.outputs.test }} ${{ steps.set.outputs.test3 }}"
+          cmd: "yq ea 'filename: .test_enabled' deploy/environments/*"
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: find_comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: This comment was written by a bot!
+      - name: Create comment
+        if: steps.find_comment.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            This PR has the following enabled:
+            ```json
+            ${{ steps.yaml.outputs.result }}
+            ```
+      - name: Update comment
+        if: steps.find_comment.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
+          body: |
+            This PR has the following enabled:
+            ```json
+            ${{ steps.yaml.outputs.result }}
+            ```
+
