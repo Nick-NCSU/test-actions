@@ -2,25 +2,16 @@ name: Test Actions
 on:
   workflow_dispatch:
     inputs:
-      graphProjectName:
+      test:
         type: string
-        description: 'graph project name'
-      integrationName:
-        type: string
-        description: 'integration name'
-        required: true
+        default: "true"
 
 jobs:
   set-output:
     runs-on: ubuntu-latest
+    env: 
+      deploy2dev: ${{ inputs.test }} == "false" && "deploy2dev" || ""
     steps: 
-      - name: set output
-        id: set
-        uses: actions/github-script@0.9.0
-        with:
-          script: |
-            core.setOutput('test', 'test2')
-            core.setOutPut('test3', 'test4')
       - name: output
         shell: bash
-        run: echo "${{ steps.set.outputs.test }} ${{ steps.set.outputs.test3 }}"
+        run: echo "Test ${{ env.deploy2dev }}"
