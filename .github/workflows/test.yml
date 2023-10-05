@@ -10,8 +10,10 @@ jobs:
   set-output:
     runs-on: ubuntu-latest
     env: 
-      deploy2dev: ${{ inputs.test }} == "false" && "deploy2dev" || ""
+      deploy2dev: 
     steps: 
       - name: output
         shell: bash
-        run: echo "Test ${{ env.deploy2dev }}"
+        run: |
+          DEPLOY=${{ inputs.test }} == "false" && "deploy2dev" || ""
+          echo "Test ${ DEPLOY }"
