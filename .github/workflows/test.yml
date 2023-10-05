@@ -13,5 +13,5 @@ jobs:
       - name: output
         shell: bash
         run: |
-          DEPLOY=${"${{ inputs.test }}" == "false" && "deploy2dev" || ""}
+          DEPLOY=${[[ "${{ inputs.test }}" == "false" ]] && "deploy2dev" || ""}
           echo "Test ${ DEPLOY }"
