@@ -12,4 +12,4 @@ jobs:
     steps: 
       - name: output
         shell: bash
-        run: echo "Test ${{ inputs.test == "true" && 'deploy2dev' || '' }}"
+        run: echo "Test ${{ inputs.test == 'true' && 'deploy2dev' || '' }}"
