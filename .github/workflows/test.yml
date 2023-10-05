@@ -9,11 +9,9 @@ on:
 jobs:
   set-output:
     runs-on: ubuntu-latest
-    env: 
-      deploy2dev: 
     steps: 
       - name: output
         shell: bash
         run: |
-          DEPLOY=${${{ inputs.test }} == "false" && "deploy2dev" || ""}
+          DEPLOY=${"${{ inputs.test }}" == "false" && "deploy2dev" || ""}
           echo "Test ${ DEPLOY }"
